@@ -1,0 +1,51 @@
+import {rm} from 'fs/promises'
+import path from 'path'
+import {mergeDeepRight} from 'rambda'
+import {createUnplugin} from 'unplugin'
+
+import {retrieveHostConfig} from './configurations/hostPlugin'
+import {retrieveRemoteConfig} from './configurations/remotePlugin'
+import {HostOptions} from './interfaces/HostOptions'
+import {RemoteOptions} from './interfaces/RemoteOptions'
+import {createTypesArchive, downloadTypesArchive} from './lib/archiveHandler'
+import {compileTs, retrieveMfTypesPath, retrieveOriginalOutDir} from './lib/typeScriptCompiler'
+
+export const NativeFederationTypeScriptRemote = createUnplugin((options: RemoteOptions) => {
+  const {remoteOptions, tsConfig, mapComponentsToExpose} = retrieveRemoteConfig(options)
+  return {
+    name: 'native-federation-tests/remote',
+    async writeBundle() {
+      compileTs(mapComponentsToExpose, tsConfig, remoteOptions)
+
+      await createTypesArchive(tsConfig, remoteOptions)
+
+      if (remoteOptions.deleteTypesFolder) {
+        await rm(retrieveMfTypesPath(tsConfig, remoteOptions), {recursive: true, force: true})
+      }
+    },
+    webpack: compiler => {
+      compiler.options.devServer = mergeDeepRight(compiler.options.devServer, {
+        static: {
+          directory: path.resolve(retrieveOriginalOutDir(tsConfig, remoteOptions))
+        }
+      })
+    }
+  }
+})
+
+export const NativeFederationTypeScriptHost = createUnplugin((options: HostOptions) => {
+  const {hostOptions, mapRemotesToDownload} = retrieveHostConfig(options)
+  return {
+    name: 'native-federation-tests/host',
+    async writeBundle() {
+      if (hostOptions.deleteTypesFolder) {
+        await rm(hostOptions.typesFolder, {recursive: true, force: true})
+      }
+
+      const typesDownloader = downloadTypesArchive(hostOptions)
+      const downloadPromises = Object.entries(mapRemotesToDownload).map(typesDownloader)
+
+      await Promise.allSettled(downloadPromises)
+    }
+  }
+})

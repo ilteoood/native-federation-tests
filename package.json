@@ -1,0 +1,68 @@
+{
+  "name": "native-federation-tests",
+  "version": "0.1.0",
+  "description": "Bundler agnostic unplugin to share federated types",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs",
+      "types": "./dist/index.d.ts"
+    },
+    "./rollup": {
+      "types": "./dist/rollup.d.ts",
+      "require": "./dist/rollup.cjs",
+      "import": "./dist/rollup.js"
+    },
+    "./vite": {
+      "types": "./dist/vite.d.ts",
+      "require": "./dist/vite.cjs",
+      "import": "./dist/vite.js"
+    },
+    "./webpack": {
+      "types": "./dist/webpack.d.ts",
+      "require": "./dist/webpack.cjs",
+      "import": "./dist/webpack.js"
+    },
+    "./esbuild": {
+      "types": "./dist/esbuild.d.ts",
+      "require": "./dist/esbuild.cjs",
+      "import": "./dist/esbuild.js"
+    }
+  },
+  "main": "./dist/index.cjs",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "scripts": {
+    "prepare": "npm run build",
+    "build": "tsup src/*.ts --format cjs,esm --dts --splitting --clean --minify",
+    "lint": "eslint src --ext .ts",
+    "test": "vitest"
+  },
+  "keywords": [],
+  "author": "Matteo Pietro Dazzi",
+  "license": "MIT",
+  "dependencies": {
+    "adm-zip": "^0.5.10",
+    "axios": "^1.2.2",
+    "rambda": "^7.4.0",
+    "tsup": "^6.5.0",
+    "typescript": "^4.9.4",
+    "unplugin": "^1.0.1"
+  },
+  "devDependencies": {
+    "@types/adm-zip": "^0.5.0",
+    "@types/node": "^18.11.18",
+    "@typescript-eslint/eslint-plugin": "^5.48.0",
+    "@typescript-eslint/parser": "^5.48.0",
+    "eslint": "^8.31.0",
+    "eslint-config-prettier": "^8.6.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-simple-import-sort": "^8.0.0",
+    "prettier": "^2.8.1",
+    "vitest": "^0.26.3"
+  }
+}
