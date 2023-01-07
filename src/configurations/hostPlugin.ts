@@ -1,14 +1,15 @@
 import {HostOptions} from '../interfaces/HostOptions'
 
 const defaultOptions = {
-    typesFolder: '@mf-types',
-    deleteTypesFolder: true
+    testsFolder: '@mf-tests',
+    mocksFolder: './__mocks__',
+    deleteTestsFolder: true
 }
 
 const buildZipUrl = (hostOptions: Required<HostOptions>, remote: string) => {
     const remoteStringUrl = remote.split('@').at(-1)!
     const remoteUrl = new URL(remoteStringUrl)
-    remoteUrl.pathname = `${hostOptions.typesFolder}.zip`
+    remoteUrl.pathname = `${hostOptions.testsFolder}.zip`
 
     return remoteUrl.href
 }

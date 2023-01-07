@@ -1,5 +1,5 @@
 import {rm} from 'fs/promises'
-import {join, resolve} from 'path'
+import {resolve} from 'path'
 import {mergeDeepRight} from 'rambda'
 import {build} from 'tsup'
 import {createUnplugin} from 'unplugin'
@@ -9,6 +9,7 @@ import {retrieveRemoteConfig} from './configurations/remotePlugin'
 import {HostOptions} from './interfaces/HostOptions'
 import {RemoteOptions} from './interfaces/RemoteOptions'
 import {createTypesArchive, downloadTypesArchive} from './lib/archiveHandler'
+import {cleanMocksFolder} from './lib/mocksClean'
 
 export const NativeFederationTestsRemote = createUnplugin((options: RemoteOptions) => {
   const {remoteOptions, compiledFilesFolder, sharedDeps} = retrieveRemoteConfig(options)
@@ -20,14 +21,14 @@ export const NativeFederationTestsRemote = createUnplugin((options: RemoteOption
       await build({
         external: sharedDeps.map(sharedDep => new RegExp(sharedDep)),
         entryPoints,
+        format: 'esm',
         outDir: compiledFilesFolder
       })
 
       await createTypesArchive(remoteOptions, compiledFilesFolder)
 
       if (remoteOptions.deleteTestsFolder) {
-        const folder = join(remoteOptions.distFolder, remoteOptions.testsFolder)
-        await rm(folder, {recursive: true, force: true})
+        await rm(compiledFilesFolder, {recursive: true, force: true})
       }
     },
     webpack: compiler => {
@@ -46,8 +47,8 @@ export const NativeFederationTestsHost = createUnplugin((options: HostOptions) =
   return {
     name: 'native-federation-tests/host',
     async writeBundle() {
-      if (hostOptions.deleteTypesFolder) {
-        await rm(hostOptions.typesFolder, {recursive: true, force: true})
+      if (hostOptions.deleteTestsFolder) {
+        await cleanMocksFolder(hostOptions, Object.keys(mapRemotesToDownload))
       }
 
       const typesDownloader = downloadTypesArchive(hostOptions)

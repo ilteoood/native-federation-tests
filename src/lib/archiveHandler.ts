@@ -21,7 +21,7 @@ const downloadErrorLogger = (destinationFolder: string, fileToDownload: string) 
 export const downloadTypesArchive = (hostOptions: Required<HostOptions>) => async ([destinationFolder, fileToDownload]: string[]) => {
     const response = await axios.get(fileToDownload, {responseType: 'arraybuffer'}).catch(downloadErrorLogger(destinationFolder, fileToDownload))
 
-    const destinationPath = join(hostOptions.typesFolder, destinationFolder)
+    const destinationPath = join(hostOptions.mocksFolder, destinationFolder)
 
     const zip = new AdmZip(Buffer.from(response.data))
     zip.extractAllTo(destinationPath, true)
