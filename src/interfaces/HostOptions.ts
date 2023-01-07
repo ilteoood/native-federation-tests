@@ -1,5 +1,5 @@
 export interface HostOptions {
     moduleFederationConfig: any;
-    typesFolder?: string;
+    mocksFolder?: string;
     deleteTypesFolder?: boolean;
 }
