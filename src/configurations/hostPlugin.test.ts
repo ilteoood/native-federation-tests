@@ -30,20 +30,22 @@ describe('hostPlugin', () => {
 
                 expect(hostOptions).toStrictEqual({
                     moduleFederationConfig,
-                    typesFolder: '@mf-types',
-                    deleteTypesFolder: true
+                    testsFolder: '@mf-tests',
+                    deleteTestsFolder: true,
+                    mocksFolder: './__mocks__',
                 })
 
                 expect(mapRemotesToDownload).toStrictEqual({
-                    moduleFederationTypescript: 'http://localhost:3000/@mf-types.zip'
+                    moduleFederationTypescript: 'http://localhost:3000/@mf-tests.zip'
                 })
             })
 
             it('all options provided', () => {
                 const options = {
                     moduleFederationConfig,
-                    typesFolder: 'custom-types',
-                    deleteTypesFolder: false
+                    mocksFolder: './__mocks__',
+                    testsFolder: 'custom-tests',
+                    deleteTestsFolder: false
                 }
 
                 const {hostOptions, mapRemotesToDownload} = retrieveHostConfig(options)
@@ -51,7 +53,7 @@ describe('hostPlugin', () => {
                 expect(hostOptions).toStrictEqual(options)
 
                 expect(mapRemotesToDownload).toStrictEqual({
-                    moduleFederationTypescript: 'http://localhost:3000/custom-types.zip'
+                    moduleFederationTypescript: 'http://localhost:3000/custom-tests.zip'
                 })
             })
         })

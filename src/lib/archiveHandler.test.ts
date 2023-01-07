@@ -10,11 +10,9 @@ import {createTypesArchive, downloadTypesArchive} from './archiveHandler'
 
 describe('archiveHandler', () => {
     const tmpDir = mkdtempSync(join(os.tmpdir(), 'archive-handler'))
-    const tsConfig = {
-        outDir: join(tmpDir, 'typesRemoteFolder', 'compiledTypesFolder')
-    }
+    const outDir = join(tmpDir, 'testsRemoteFolder', 'compiledTypesFolder')
 
-    mkdirSync(tsConfig.outDir, {recursive: true})
+    mkdirSync(outDir, {recursive: true})
 
     afterAll(() => {
         rmSync(tmpDir, {recursive: true})
@@ -22,32 +20,33 @@ describe('archiveHandler', () => {
 
     describe('createTypesArchive', () => {
         const remoteOptions: Required<RemoteOptions> = {
-            compiledTypesFolder: 'compiledTypesFolder',
-            typesFolder: 'typesRemoteFolder',
             moduleFederationConfig: {},
-            tsConfigPath: './tsconfig.json',
-            deleteTypesFolder: false
+            distFolder: tmpDir,
+            testsFolder: '@mf-tests',
+            deleteTestsFolder: false
         }
 
         it('correctly creates archive', async () => {
-            const archivePath = join(tmpDir, `${remoteOptions.typesFolder}.zip`)
+            const archivePath = join(tmpDir, `${remoteOptions.testsFolder}.zip`)
 
-            const archiveCreated = await createTypesArchive(tsConfig, remoteOptions)
+            const archiveCreated = await createTypesArchive(remoteOptions, outDir)
 
             expect(archiveCreated).toBeTruthy()
             expect(existsSync(archivePath)).toBeTruthy()
         })
 
         it('throws for unexisting outDir', async () => {
-            expect(createTypesArchive({...tsConfig, outDir: '/foo'}, remoteOptions)).rejects.toThrowError()
+            expect(createTypesArchive(remoteOptions, '/foo')).rejects.toThrowError()
         })
     })
 
     describe('downloadTypesArchive', () => {
+        const archivePath = join(tmpDir, 'testsHostFolder')
         const hostOptions = {
             moduleFederationConfig: {},
-            typesFolder: tmpDir,
-            deleteTypesFolder: true
+            mocksFolder: archivePath,
+            testsFolder: tmpDir,
+            deleteTestsFolder: true
         }
 
         it('throws for unexisting url', async () => {
@@ -55,13 +54,12 @@ describe('archiveHandler', () => {
         })
 
         it('correctly extract downloaded archive', async () => {
-            const archivePath = join(tmpDir, 'typesHostFolder')
             const zip = new AdmZip()
             await zip.addLocalFolderPromise(tmpDir, {})
 
             axios.get = vi.fn().mockResolvedValueOnce({data: zip.toBuffer()})
 
-            await downloadTypesArchive(hostOptions)(['typesHostFolder', 'https://foo.it'])
+            await downloadTypesArchive(hostOptions)(['testsHostFolder', 'https://foo.it'])
             expect(existsSync(archivePath)).toBeTruthy()
         })
     })

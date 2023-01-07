@@ -1,4 +1,3 @@
-import path from 'path'
 import {describe, expect, it} from 'vitest'
 
 import {retrieveRemoteConfig} from './remotePlugin'
@@ -26,78 +25,38 @@ describe('hostPlugin', () => {
 
         describe('correctly intersect with default options', () => {
             it('only moduleFederationConfig provided', () => {
-                const {tsConfig, mapComponentsToExpose, remoteOptions} = retrieveRemoteConfig({
+                const {compiledFilesFolder, sharedDeps, remoteOptions} = retrieveRemoteConfig({
                     moduleFederationConfig
                 })
 
-                expect(tsConfig).toStrictEqual({
-                    target: 4,
-                    module: 99,
-                    lib: ['lib.esnext.d.ts'],
-                    moduleResolution: 2,
-                    esModuleInterop: true,
-                    strict: true,
-                    strictNullChecks: true,
-                    resolveJsonModule: true,
-                    configFilePath: undefined,
-                    emitDeclarationOnly: true,
-                    noEmit: false,
-                    declaration: true,
-                    outDir: 'dist/@mf-types/compiled-types'
-                })
+                expect(compiledFilesFolder).toBe('dist/@mf-tests')
 
-                expect(mapComponentsToExpose).toStrictEqual({
-                    './anotherButton': './src/components/anotherButton',
-                    './button': './src/components/button',
-                })
+                expect(sharedDeps).toStrictEqual(['react', 'react-dom'])
 
                 expect(remoteOptions).toStrictEqual({
-                    additionalFilesToCompile: [],
-                    tsConfigPath: './tsconfig.json',
-                    typesFolder: '@mf-types',
-                    compiledTypesFolder: 'compiled-types',
-                    deleteTypesFolder: true,
+                    testsFolder: '@mf-tests',
+                    distFolder: './dist',
+                    deleteTestsFolder: true,
                     moduleFederationConfig
                 })
             })
 
             it('all options provided', () => {
-                const tsConfigPath = path.join(__dirname, 'tsconfig.test.json')
-                const {tsConfig, mapComponentsToExpose, remoteOptions} = retrieveRemoteConfig({
+                const {compiledFilesFolder, sharedDeps, remoteOptions}  = retrieveRemoteConfig({
                     moduleFederationConfig,
-                    tsConfigPath,
-                    typesFolder: 'typesFolder',
-                    compiledTypesFolder: 'compiledTypesFolder',
-                    deleteTypesFolder: false
+                    distFolder: 'distFolder',
+                    testsFolder: 'testsFolder',
+                    deleteTestsFolder: true
                 })
 
-                expect(tsConfig).toStrictEqual({
-                    target: 4,
-                    module: 99,
-                    lib: ['lib.esnext.d.ts'],
-                    moduleResolution: 2,
-                    esModuleInterop: true,
-                    strict: true,
-                    strictNullChecks: true,
-                    resolveJsonModule: true,
-                    configFilePath: undefined,
-                    emitDeclarationOnly: true,
-                    noEmit: false,
-                    declaration: true,
-                    outDir: 'dist/typesFolder/compiledTypesFolder'
-                })
+                expect(compiledFilesFolder).toBe('distFolder/testsFolder')
 
-                expect(mapComponentsToExpose).toStrictEqual({
-                    './anotherButton': './src/components/anotherButton',
-                    './button': './src/components/button',
-                })
+                expect(sharedDeps).toStrictEqual(['react', 'react-dom'])
 
                 expect(remoteOptions).toStrictEqual({
-                    additionalFilesToCompile: [],
-                    tsConfigPath,
-                    typesFolder: 'typesFolder',
-                    compiledTypesFolder: 'compiledTypesFolder',
-                    deleteTypesFolder: false,
+                    testsFolder: 'testsFolder',
+                    distFolder: 'distFolder',
+                    deleteTestsFolder: true,
                     moduleFederationConfig
                 })
             })
