@@ -1,4 +1,4 @@
-import {NativeFederationTypeScriptHost as GeneralHost, NativeFederationTypeScriptRemote as GeneralRemote} from '.'
+import {NativeFederationTestsHost as GeneralHost, NativeFederationTestsRemote as GeneralRemote} from '.'
 
-export const NativeFederationTypeScriptRemote = GeneralRemote.rollup
-export const NativeFederationTypeScriptHost = GeneralHost.rollup
+export const NativeFederationTestsRemote = GeneralRemote.rollup
+export const NativeFederationTestsHost = GeneralHost.rollup

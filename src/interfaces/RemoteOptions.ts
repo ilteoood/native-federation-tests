@@ -1,8 +1,6 @@
 export interface RemoteOptions {
     moduleFederationConfig: any;
-    tsConfigPath?: string;
-    typesFolder?: string;
-    compiledTypesFolder?: string;
-    deleteTypesFolder?: boolean;
-    additionalFilesToCompile?: string[]
+    distFolder?: string;
+    testsFolder?: string;
+    deleteTestsFolder?: boolean;
 }

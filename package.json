@@ -50,7 +50,6 @@
     "axios": "^1.2.2",
     "rambda": "^7.4.0",
     "tsup": "^6.5.0",
-    "typescript": "^4.9.4",
     "unplugin": "^1.0.1"
   },
   "devDependencies": {
@@ -63,6 +62,7 @@
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-simple-import-sort": "^8.0.0",
     "prettier": "^2.8.1",
+    "typescript": "^4.9.4",
     "vitest": "^0.26.3"
   }
 }

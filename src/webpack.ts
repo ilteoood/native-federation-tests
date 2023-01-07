@@ -1,4 +1,4 @@
-import {NativeFederationTypeScriptHost as GeneralHost, NativeFederationTypeScriptRemote as GeneralRemote} from '.'
+import {NativeFederationTestsHost as GeneralHost, NativeFederationTestsRemote as GeneralRemote} from '.'
 
-export const NativeFederationTypeScriptRemote = GeneralRemote.webpack
-export const NativeFederationTypeScriptHost = GeneralHost.webpack
+export const NativeFederationTestsRemote = GeneralRemote.webpack
+export const NativeFederationTestsHost = GeneralHost.webpack

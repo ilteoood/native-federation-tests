@@ -1,4 +1,4 @@
-import {NativeFederationTypeScriptHost as GeneralHost, NativeFederationTypeScriptRemote as GeneralRemote} from '.'
+import {NativeFederationTestsHost as GeneralHost, NativeFederationTestsRemote as GeneralRemote} from '.'
 
-export const NativeFederationTypeScriptRemote = GeneralRemote.esbuild
-export const NativeFederationTypeScriptHost = GeneralHost.esbuild
+export const NativeFederationTestsRemote = GeneralRemote.esbuild
+export const NativeFederationTestsHost = GeneralHost.esbuild

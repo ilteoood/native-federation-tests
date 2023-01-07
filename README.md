@@ -10,25 +10,23 @@ npm i -D https://github.com/ilteoood/native-federation-tests
 
 This module provides two plugins:
 
-### NativeFederationTypeScriptRemote
+### NativeFederationTestsRemote
 This plugin is used to build the federated types.
 
 #### Configuration
 ```typescript
 {
     moduleFederationConfig: any; // the configuration same configuration provided to the module federation plugin, it is MANDATORY
-    tsConfigPath?: string; // path where the tsconfig file is located, default is ''./tsconfig.json'
-    typesFolder?: string; // folder where all the files will be stored, default is '@mf-types',
-    compiledTypesFolder?: string; // folder where the federated modules types will be stored, default is 'compiled-types'
-    deleteTypesFolder?: boolean; // indicate if the types folder will be deleted when the job completes, default is 'true'
-    additionalFilesToCompile?: stringp[] // The path of each additional file which should be emitted
+    distFolder?: string; // folder used to store the dist, default is './dist'
+    testsFolder?: string; // folder where all the files will be stored, default is '@mf-tests'
+    deleteTypesFolder?: boolean; // indicate if the tests folder will be deleted when the job completes, default is 'true'
 }
 ```
 
 #### Additional configuration
 Note that, for Webpack, the plugin automatically inject the `devServer.static.directory` configuration.
 
-### NativeFederationTypeScriptHost
+### NativeFederationTestsHost
 This plugin is used to download the federated types.
 
 ### Configuration
@@ -48,12 +46,12 @@ This plugin is used to download the federated types.
 
 ```ts
 // vite.config.ts
-import {NativeFederationTypeScriptHost, NativeFederationTypeScriptRemote} from 'native-federation-tests/vite'
+import {NativeFederationTestsHost, NativeFederationTestsRemote} from 'native-federation-tests/vite'
 
 export default defineConfig({
   plugins: [
-    NativeFederationTypeScriptRemote({ /* options */ }),
-    NativeFederationTypeScriptHost({ /* options */ }),
+    NativeFederationTestsRemote({ /* options */ }),
+    NativeFederationTestsHost({ /* options */ }),
   ],
   /* ... */
   server: { // This is needed to emulate the devServer.static.directory of WebPack and correctly serve the zip file
@@ -81,12 +79,12 @@ export default defineConfig({
 
 ```ts
 // rollup.config.js
-import {NativeFederationTypeScriptHost, NativeFederationTypeScriptRemote} from 'native-federation-tests/rollup'
+import {NativeFederationTestsHost, NativeFederationTestsRemote} from 'native-federation-tests/rollup'
 
 export default {
   plugins: [
-    NativeFederationTypeScriptRemote({ /* options */ }),
-    NativeFederationTypeScriptHost({ /* options */ }),
+    NativeFederationTestsRemote({ /* options */ }),
+    NativeFederationTestsHost({ /* options */ }),
   ],
 }
 ```
@@ -98,12 +96,12 @@ export default {
 
 ```ts
 // webpack.config.js
-const {NativeFederationTypeScriptHost, NativeFederationTypeScriptRemote} = require('native-federation-tests/webpack')
+const {NativeFederationTestsHost, NativeFederationTestsRemote} = require('native-federation-tests/webpack')
 module.exports = {
   /* ... */
   plugins: [
-    NativeFederationTypeScriptRemote({ /* options */ }),
-    NativeFederationTypeScriptHost({ /* options */ })
+    NativeFederationTestsRemote({ /* options */ }),
+    NativeFederationTestsHost({ /* options */ })
   ]
 }
 ```
@@ -116,12 +114,12 @@ module.exports = {
 ```ts
 // esbuild.config.js
 import { build } from 'esbuild'
-import {NativeFederationTypeScriptHost, NativeFederationTypeScriptRemote} from 'native-federation-tests/esbuild'
+import {NativeFederationTestsHost, NativeFederationTestsRemote} from 'native-federation-tests/esbuild'
 
 build({
   plugins: [
-    NativeFederationTypeScriptRemote({ /* options */ }),
-    NativeFederationTypeScriptHost({ /* options */ })
+    NativeFederationTestsRemote({ /* options */ }),
+    NativeFederationTestsHost({ /* options */ })
   ],
 })
 ```

@@ -1,6 +1,7 @@
 import {rm} from 'fs/promises'
-import path from 'path'
+import {join, resolve} from 'path'
 import {mergeDeepRight} from 'rambda'
+import {build} from 'tsup'
 import {createUnplugin} from 'unplugin'
 
 import {retrieveHostConfig} from './configurations/hostPlugin'
@@ -8,32 +9,39 @@ import {retrieveRemoteConfig} from './configurations/remotePlugin'
 import {HostOptions} from './interfaces/HostOptions'
 import {RemoteOptions} from './interfaces/RemoteOptions'
 import {createTypesArchive, downloadTypesArchive} from './lib/archiveHandler'
-import {compileTs, retrieveMfTypesPath, retrieveOriginalOutDir} from './lib/typeScriptCompiler'
 
-export const NativeFederationTypeScriptRemote = createUnplugin((options: RemoteOptions) => {
-  const {remoteOptions, tsConfig, mapComponentsToExpose} = retrieveRemoteConfig(options)
+export const NativeFederationTestsRemote = createUnplugin((options: RemoteOptions) => {
+  const {remoteOptions, compiledFilesFolder, sharedDeps} = retrieveRemoteConfig(options)
   return {
     name: 'native-federation-tests/remote',
     async writeBundle() {
-      compileTs(mapComponentsToExpose, tsConfig, remoteOptions)
+      const entryPoints: string[] = Object.values(remoteOptions.moduleFederationConfig.exposes)
 
-      await createTypesArchive(tsConfig, remoteOptions)
+      await build({
+        external: sharedDeps.map(sharedDep => new RegExp(sharedDep)),
+        entryPoints,
+        outDir: compiledFilesFolder
+      })
 
-      if (remoteOptions.deleteTypesFolder) {
-        await rm(retrieveMfTypesPath(tsConfig, remoteOptions), {recursive: true, force: true})
+      await createTypesArchive(remoteOptions, compiledFilesFolder)
+
+      if (remoteOptions.deleteTestsFolder) {
+        const folder = join(remoteOptions.distFolder, remoteOptions.testsFolder)
+        await rm(folder, {recursive: true, force: true})
       }
     },
     webpack: compiler => {
       compiler.options.devServer = mergeDeepRight(compiler.options.devServer, {
         static: {
-          directory: path.resolve(retrieveOriginalOutDir(tsConfig, remoteOptions))
+          directory: resolve(remoteOptions.distFolder)
         }
       })
     }
   }
 })
 
-export const NativeFederationTypeScriptHost = createUnplugin((options: HostOptions) => {
+
+export const NativeFederationTestsHost = createUnplugin((options: HostOptions) => {
   const {hostOptions, mapRemotesToDownload} = retrieveHostConfig(options)
   return {
     name: 'native-federation-tests/host',
