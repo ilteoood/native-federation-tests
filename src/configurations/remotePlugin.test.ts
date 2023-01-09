@@ -25,39 +25,42 @@ describe('hostPlugin', () => {
 
         describe('correctly intersect with default options', () => {
             it('only moduleFederationConfig provided', () => {
-                const {compiledFilesFolder, sharedDeps, remoteOptions} = retrieveRemoteConfig({
+                const {compiledFilesFolder, externalDeps, remoteOptions} = retrieveRemoteConfig({
                     moduleFederationConfig
                 })
 
                 expect(compiledFilesFolder).toBe('dist/@mf-tests')
 
-                expect(sharedDeps).toStrictEqual(['react', 'react-dom'])
+                expect(externalDeps).toStrictEqual(['react', 'react-dom'])
 
                 expect(remoteOptions).toStrictEqual({
                     testsFolder: '@mf-tests',
                     distFolder: './dist',
                     deleteTestsFolder: true,
-                    moduleFederationConfig
+                    moduleFederationConfig,
+                    outputFormat: 'esm'
                 })
             })
 
             it('all options provided', () => {
-                const {compiledFilesFolder, sharedDeps, remoteOptions}  = retrieveRemoteConfig({
+                const {compiledFilesFolder, externalDeps, remoteOptions}  = retrieveRemoteConfig({
                     moduleFederationConfig,
                     distFolder: 'distFolder',
                     testsFolder: 'testsFolder',
-                    deleteTestsFolder: true
+                    deleteTestsFolder: true,
+                    outputFormat: 'cjs'
                 })
 
                 expect(compiledFilesFolder).toBe('distFolder/testsFolder')
 
-                expect(sharedDeps).toStrictEqual(['react', 'react-dom'])
+                expect(externalDeps).toStrictEqual(['react', 'react-dom'])
 
                 expect(remoteOptions).toStrictEqual({
                     testsFolder: 'testsFolder',
                     distFolder: 'distFolder',
                     deleteTestsFolder: true,
-                    moduleFederationConfig
+                    moduleFederationConfig,
+                    outputFormat: 'cjs'
                 })
             })
 
