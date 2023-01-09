@@ -35,12 +35,12 @@ export const retrieveRemoteConfig = (options: RemoteOptions) => {
 
     const remoteOptions: Required<RemoteOptions> = {...defaultOptions, ...options}
     const mapComponentsToExpose = resolveExposes(remoteOptions)
-    const sharedDeps = Object.keys(options.moduleFederationConfig.shared || {})
+    const externalDeps = Object.keys(options.moduleFederationConfig.shared || {}).concat(Object.keys(options.moduleFederationConfig.remotes || {}))
     const compiledFilesFolder = join(remoteOptions.distFolder, remoteOptions.testsFolder)
 
     return {
         remoteOptions,
-        sharedDeps,
+        externalDeps,
         compiledFilesFolder,
         mapComponentsToExpose
     }

@@ -12,14 +12,14 @@ import {createTypesArchive, downloadTypesArchive} from './lib/archiveHandler'
 import {cleanMocksFolder} from './lib/mocksClean'
 
 export const NativeFederationTestsRemote = createUnplugin((options: RemoteOptions) => {
-  const {remoteOptions, compiledFilesFolder, sharedDeps, mapComponentsToExpose} = retrieveRemoteConfig(options)
+  const {remoteOptions, compiledFilesFolder, externalDeps, mapComponentsToExpose} = retrieveRemoteConfig(options)
   return {
     name: 'native-federation-tests/remote',
     async writeBundle() {
       const entryPoints: string[] = Object.values(mapComponentsToExpose)
 
       await build({
-        external: sharedDeps.map(sharedDep => new RegExp(sharedDep)),
+        external: externalDeps.map(externalDep => new RegExp(externalDep)),
         entryPoints,
         format: 'esm',
         outDir: compiledFilesFolder
