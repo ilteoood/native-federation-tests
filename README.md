@@ -1,6 +1,8 @@
 # native-federation-tests
 
-Bundler agnostic plugins to share federated types.
+Bundler agnostic plugins to share federated components for testing purposes.
+
+It aims to work for both [`vitest`](https://vitest.dev/) and [`jest`](https://jestjs.io/).
 
 ## Install
 
@@ -11,7 +13,7 @@ npm i -D https://github.com/ilteoood/native-federation-tests
 This module provides two plugins:
 
 ### NativeFederationTestsRemote
-This plugin is used to build the federated types.
+This plugin is used to concat the components that will be used in tests.
 
 #### Configuration
 ```typescript
@@ -19,7 +21,7 @@ This plugin is used to build the federated types.
     moduleFederationConfig: any; // the configuration same configuration provided to the module federation plugin, it is MANDATORY
     distFolder?: string; // folder used to store the dist, default is './dist'
     testsFolder?: string; // folder where all the files will be stored, default is '@mf-tests'
-    deleteTypesFolder?: boolean; // indicate if the tests folder will be deleted when the job completes, default is 'true'
+    deleteTestsFolder?: boolean; // indicate if the concatenated components folder will be deleted when the job completes, default is 'true'
 }
 ```
 
@@ -27,15 +29,16 @@ This plugin is used to build the federated types.
 Note that, for Webpack, the plugin automatically inject the `devServer.static.directory` configuration.
 
 ### NativeFederationTestsHost
-This plugin is used to download the federated types.
+This plugin is used to download the concatenated components mock that will be used for tests.
 
 ### Configuration
 
 ```typescript
 {
     moduleFederationConfig: any; // the configuration same configuration provided to the module federation plugin, it is MANDATORY
-    typesFolder?: string; // folder where all the files will be stored, default is '@mf-types',
-    deleteTypesFolder?: boolean; // indicate if the types folder will be deleted before the job starts, default is 'true'
+    testsFolder?: string; // folder where all the files have been stored, default is '@mf-tests',
+    mocksFolder?: string; // folder where the concatenated files will be stored, default is './__mocks__',
+    deleteTestsFolder?: boolean; // indicate if the tests mock folder will be deleted before the job starts, default is 'true'
 }
 ```
 
@@ -126,18 +129,6 @@ build({
 
 <br>
 </details>
-
-## TypeScript configuration
-
-To have the type definitions automatically found for imports, add paths to the `compilerOptions` in the `tsconfig.json`:
-
-```json
-{  
-  "paths": {
-    "*": ["./@mf-types/*"]
-  }
-}
-```
 
 ## Examples
 
