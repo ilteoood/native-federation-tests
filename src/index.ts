@@ -16,11 +16,9 @@ export const NativeFederationTestsRemote = createUnplugin((options: RemoteOption
   return {
     name: 'native-federation-tests/remote',
     async writeBundle() {
-      const entryPoints: string[] = Object.values(mapComponentsToExpose)
-
       await build({
         external: externalDeps.map(externalDep => new RegExp(externalDep)),
-        entryPoints,
+        entryPoints: mapComponentsToExpose,
         format: 'esm',
         outDir: compiledFilesFolder
       })
