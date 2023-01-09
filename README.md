@@ -19,6 +19,7 @@ This plugin is used to concat the components that will be used in tests.
 ```typescript
 {
     moduleFederationConfig: any; // the configuration same configuration provided to the module federation plugin, it is MANDATORY
+    outputFormat?: string; // format used to aggregate files, default is 'esm'
     distFolder?: string; // folder used to store the dist, default is './dist'
     testsFolder?: string; // folder where all the files will be stored, default is '@mf-tests'
     deleteTestsFolder?: boolean; // indicate if the concatenated components folder will be deleted when the job completes, default is 'true'

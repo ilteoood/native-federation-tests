@@ -19,8 +19,8 @@ export const NativeFederationTestsRemote = createUnplugin((options: RemoteOption
       await build({
         external: externalDeps.map(externalDep => new RegExp(externalDep)),
         entryPoints: mapComponentsToExpose,
-        format: 'esm',
-        outDir: compiledFilesFolder
+        format: remoteOptions.outputFormat,
+        outDir: compiledFilesFolder,
       })
 
       await createTypesArchive(remoteOptions, compiledFilesFolder)

@@ -6,7 +6,8 @@ import {RemoteOptions} from '../interfaces/RemoteOptions'
 const defaultOptions = {
     testsFolder: '@mf-tests',
     distFolder: './dist',
-    deleteTestsFolder: true
+    deleteTestsFolder: true,
+    outputFormat: 'esm'
 }
 
 const EXTENSIONS = ['ts', 'tsx', 'js', 'jsx', 'mjs']
