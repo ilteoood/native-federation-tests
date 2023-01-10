@@ -38,7 +38,7 @@ describe('hostPlugin', () => {
                     distFolder: './dist',
                     deleteTestsFolder: true,
                     moduleFederationConfig,
-                    outputFormat: 'esm'
+                    additionalBundlerConfig: {}
                 })
             })
 
@@ -48,7 +48,9 @@ describe('hostPlugin', () => {
                     distFolder: 'distFolder',
                     testsFolder: 'testsFolder',
                     deleteTestsFolder: true,
-                    outputFormat: 'cjs'
+                    additionalBundlerConfig: {
+                        format: 'cjs'
+                    }
                 })
 
                 expect(compiledFilesFolder).toBe('distFolder/testsFolder')
@@ -60,7 +62,9 @@ describe('hostPlugin', () => {
                     distFolder: 'distFolder',
                     deleteTestsFolder: true,
                     moduleFederationConfig,
-                    outputFormat: 'cjs'
+                    additionalBundlerConfig: {
+                        format: 'cjs'
+                    }
                 })
             })
 
