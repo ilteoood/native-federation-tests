@@ -30,9 +30,11 @@ export const NativeFederationTestsRemote = createUnplugin((options: RemoteOption
       }
     },
     webpack: compiler => {
-      compiler.options.devServer = mergeDeepRight(compiler.options.devServer, {
-        static: {
-          directory: resolve(remoteOptions.distFolder)
+      compiler.options = mergeDeepRight(compiler.options, {
+        devServer: {
+          static: {
+            directory: resolve(remoteOptions.distFolder)
+          }
         }
       })
     }
