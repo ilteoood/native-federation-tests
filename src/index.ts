@@ -1,6 +1,6 @@
 import {rm} from 'fs/promises'
 import {resolve} from 'path'
-import {mergeDeepRight} from 'rambda'
+import {mergeDeepRight, mergeRight} from 'rambda'
 import {build} from 'tsup'
 import {createUnplugin} from 'unplugin'
 
@@ -16,12 +16,12 @@ export const NativeFederationTestsRemote = createUnplugin((options: RemoteOption
   return {
     name: 'native-federation-tests/remote',
     async writeBundle() {
-      await build({
+      const buildConfig = mergeRight(remoteOptions.additionalBundlerConfig, {
         external: externalDeps.map(externalDep => new RegExp(externalDep)),
         entry: mapComponentsToExpose,
-        format: remoteOptions.outputFormat,
         outDir: compiledFilesFolder,
       })
+      await build(buildConfig)
 
       await createTypesArchive(remoteOptions, compiledFilesFolder)
 

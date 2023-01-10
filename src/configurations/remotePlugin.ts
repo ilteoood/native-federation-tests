@@ -7,7 +7,7 @@ const defaultOptions = {
     testsFolder: '@mf-tests',
     distFolder: './dist',
     deleteTestsFolder: true,
-    outputFormat: 'esm'
+    additionalBundlerConfig: {}
 }
 
 const EXTENSIONS = ['ts', 'tsx', 'js', 'jsx', 'mjs']

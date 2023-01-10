@@ -1,6 +1,8 @@
+import type {Options} from 'tsup'
+
 export interface RemoteOptions {
     moduleFederationConfig: any;
-    outputFormat?: string;
+    additionalBundlerConfig?: Options;
     distFolder?: string;
     testsFolder?: string;
     deleteTestsFolder?: boolean;
