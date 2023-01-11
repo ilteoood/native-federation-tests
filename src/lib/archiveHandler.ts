@@ -14,7 +14,7 @@ export const createTypesArchive = async (remoteOptions: Required<RemoteOptions>,
 }
 
 const downloadErrorLogger = (destinationFolder: string, fileToDownload: string) => (reason: any) => {
-    console.error(`Unable to download federated types for '${destinationFolder}' from '${fileToDownload}' because '${reason.message}', skipping...`)
+    console.error(`Unable to download federated mocks for '${destinationFolder}' from '${fileToDownload}' because '${reason.message}', skipping...`)
     throw reason
 }
 
