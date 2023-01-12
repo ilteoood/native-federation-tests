@@ -22,7 +22,7 @@ describe('index', () => {
                     name: 'moduleFederationTypescript',
                     filename: 'remoteEntry.js',
                     exposes: {
-                        './index': './src/index.ts',
+                        index: './src/index.ts',
                     },
                     shared: {
                         react: {singleton: true, eager: true},
@@ -40,7 +40,7 @@ describe('index', () => {
 
             expect(dirTree(distFolder)).toMatchObject({
                 name: '@mf-tests',
-                children: [{name: 'index.cjs'}]
+                children: [{name: 'index.cjs'}, {name: 'index.d.ts'}, {name: 'index.js'}]
             })
         })
 
@@ -122,7 +122,7 @@ describe('index', () => {
                 name: '__mocks__',
                 children: [{
                     name: 'remotes',
-                    children: [{name: 'index.cjs'}]
+                    children: [{name: 'index.cjs'}, {name: 'index.d.ts'}, {name: 'index.js'}]
                 }]
             }
             )
