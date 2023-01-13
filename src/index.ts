@@ -1,4 +1,4 @@
-import chalk from 'chalk'
+import ansiColors from 'ansi-colors'
 import {rm} from 'fs/promises'
 import {resolve} from 'path'
 import {mergeDeepRight, mergeRight} from 'rambda'
@@ -32,7 +32,7 @@ export const NativeFederationTestsRemote = createUnplugin((options: RemoteOption
           await rm(compiledFilesFolder, {recursive: true, force: true})
         }
       } catch(error) {
-        console.error(chalk.red(`Unable to build concatenated source files: ${error}`))
+        console.error(ansiColors.red(`Unable to build concatenated source files: ${error}`))
       }
     },
     webpack: compiler => {
