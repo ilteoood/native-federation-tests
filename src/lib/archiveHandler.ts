@@ -1,5 +1,6 @@
 import AdmZip from 'adm-zip'
 import axios from 'axios'
+import chalk from 'chalk'
 import {join} from 'path'
 
 import {HostOptions} from '../interfaces/HostOptions'
@@ -14,7 +15,7 @@ export const createTypesArchive = async (remoteOptions: Required<RemoteOptions>,
 }
 
 const downloadErrorLogger = (destinationFolder: string, fileToDownload: string) => (reason: any) => {
-    console.error(`Unable to download federated mocks for '${destinationFolder}' from '${fileToDownload}' because '${reason.message}', skipping...`)
+    console.error(chalk.red(`Unable to download federated mocks for '${destinationFolder}' from '${fileToDownload}' because '${reason.message}', skipping...`))
     throw reason
 }
 

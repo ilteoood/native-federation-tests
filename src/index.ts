@@ -1,3 +1,4 @@
+import chalk from 'chalk'
 import {rm} from 'fs/promises'
 import {resolve} from 'path'
 import {mergeDeepRight, mergeRight} from 'rambda'
@@ -21,12 +22,17 @@ export const NativeFederationTestsRemote = createUnplugin((options: RemoteOption
         entry: mapComponentsToExpose,
         outDir: compiledFilesFolder,
       })
-      await build(buildConfig)
 
-      await createTypesArchive(remoteOptions, compiledFilesFolder)
+      try {
+        await build(buildConfig)
 
-      if (remoteOptions.deleteTestsFolder) {
-        await rm(compiledFilesFolder, {recursive: true, force: true})
+        await createTypesArchive(remoteOptions, compiledFilesFolder)
+
+        if (remoteOptions.deleteTestsFolder) {
+          await rm(compiledFilesFolder, {recursive: true, force: true})
+        }
+      } catch(error) {
+        console.error(chalk.red(`Unable to build concatenated source files: ${error}`))
       }
     },
     webpack: compiler => {
