@@ -10,7 +10,7 @@ const retrieveTestsZipPath = (remoteOptions: Required<RemoteOptions>) => join(re
 
 export const createTypesArchive = async (remoteOptions: Required<RemoteOptions>, compiledFilesFolder: string) => {
     const zip = new AdmZip()
-    await zip.addLocalFolderPromise(compiledFilesFolder, {})
+    zip.addLocalFolder(compiledFilesFolder)
     return zip.writeZipPromise(retrieveTestsZipPath(remoteOptions))
 }
 
