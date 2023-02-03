@@ -21,6 +21,7 @@ export const NativeFederationTestsRemote = createUnplugin((options: RemoteOption
         external: externalDeps.map(externalDep => new RegExp(externalDep)),
         entry: mapComponentsToExpose,
         outDir: compiledFilesFolder,
+        silent: true
       })
 
       try {
