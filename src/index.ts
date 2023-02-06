@@ -32,8 +32,9 @@ export const NativeFederationTestsRemote = createUnplugin((options: RemoteOption
         if (remoteOptions.deleteTestsFolder) {
           await rm(compiledFilesFolder, {recursive: true, force: true})
         }
+        console.log(ansiColors.green('Federated mocks created correctly'))
       } catch(error) {
-        console.error(ansiColors.red(`Unable to build concatenated source files: ${error}`))
+        console.error(ansiColors.red(`Unable to build federated mocks: ${error}`))
       }
     },
     webpack: compiler => {
@@ -60,6 +61,7 @@ export const NativeFederationTestsHost = createUnplugin((options: HostOptions) =
       const downloadPromises = Object.entries(mapRemotesToDownload).map(typesDownloader)
 
       await Promise.allSettled(downloadPromises)
+      console.log(ansiColors.green('Federated mocks extraction completed'))
     }
   }
 })
