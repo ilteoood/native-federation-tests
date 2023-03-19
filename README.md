@@ -131,6 +131,25 @@ build({
 <br>
 </details>
 
+<details>
+<summary>Rspack</summary><br>
+
+```ts
+// rspack.config.js
+const {NativeFederationTestsHost, NativeFederationTestsRemote} = require('native-federation-tests/rspack')
+
+module.exports = {
+  /* ... */
+  plugins: [
+    NativeFederationTestsRemote({ /* options */ }),
+    NativeFederationTestsHost({ /* options */ })
+  ]
+}
+```
+
+<br>
+</details>
+
 ## Examples
 
 To use it in a `host` module, refer to [this example](https://github.com/ilteoood/module-federation-typescript/tree/host).  
