@@ -1,3 +1,5 @@
+# THIS PLUGIN IS NOW PART OF THE OFFICIAL [MODULE FEDERATION ORGANIZATION](https://github.com/module-federation/universe/tree/main/packages/native-federation-tests)
+
 # native-federation-tests
 
 Bundler agnostic plugins to share federated components for testing purposes.
